@@ -8,46 +8,39 @@
  */
 
 function repeatedString(s, n) {
+  var arr = [...s];
 
-  console.log(s);
+  var size = s.length;
+  var rem = n % size;
+  var repeated = (n - rem) / size;
 
-  var res = 0;
+  //results
+  var singlePass = 0;
+  var extra = 0;
 
-  var sArr = [...s];
-  var sArrbuffer = [];
-
-  //get correct array size with repeated s
-  while(sArrbuffer.length < n){
-    for(let i in sArr){
-      if(sArrbuffer.length === n){
-        break;
-      }
-      else{
-        sArrbuffer.push(sArr[i]);
-      }   
-    } 
-  }
-
-  //set data back to sArr
-  sArr = sArrbuffer;
-
-  console.log(sArr);
-
-  //count occurances of 'a'
-  for(let i in sArr){
-    if(sArr[i] === 'a'){
-      res++;
+  //regular pass
+  for (let i = 0; i < size; i++) {
+    if (arr[i] == "a") {
+      singlePass++;
     }
   }
 
-  console.log(res);
-  
-  return res;
+  //account for extra
+  for (let i = 0; i < rem; i++) {
+    console.log("Doing extra");
+    if (arr[i] === "a") {
+      extra++;
+    }
+  }
 
+  console.log(`SP: ${singlePass} Repeated: ${repeated} Extra: ${extra}`);
+
+  var res = singlePass * repeated + extra;
+
+  return res;
 }
 
-
-const s = 'a'
+const s = "a";
 const n = 10;
 
 repeatedString(s, n);
