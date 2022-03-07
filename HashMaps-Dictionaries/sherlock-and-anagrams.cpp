@@ -24,28 +24,33 @@ int sherlockAndAnagrams(string s)
   cout << s << endl;
 
   // create hashmaps for string
-  map<int, int> m1, m2;
+  map<int, int> m1;
 
   for (int i = 0; i < s.length(); i++)
   {
 
-    int occurances = 1;
-    int ascii = int(s.at(i));
+    int ascii = int(s.at(i)); // char to ascii
+    int occurances = 1;           // occurances for this ascii key
 
-    cout << m1.count(ascii) << endl;
-
-    if (m1.count(ascii))
+    // check if key exists
+    if (m1.count(ascii) == 1)
     {
-      occurances = 2;
-      cout << "TRUE!" << endl;
+      occurances = m1.at(ascii); // get element of occurances
+      m1.erase(ascii);           // erase old
+      occurances++;              // inc occurances
     }
-
+    
     m1.emplace(ascii, occurances);
   }
 
+  //REMEBER THE CONSTRAINTS 
+  //S will always be longer than 2.
+  //Split each word in half, and whatever letters are the same use those to try and match the first word
+  //Re do this and increment pairs for each sucessful match 
+
   // prints the elements
   cout << "KEY\tOCCURANCES\n";
-  for (auto itr = m1.begin(); itr != m1.end(); ++itr)
+  for (auto itr = m1.begin(); itr != m1.end(); itr++)
   {
     cout << itr->first << '\t' << itr->second << '\n';
   }
