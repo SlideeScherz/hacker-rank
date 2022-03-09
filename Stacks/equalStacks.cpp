@@ -8,79 +8,49 @@ vector<string> split(const string &);
 
 /*
  * Complete the 'equalStacks' function below.
- *
  * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER_ARRAY h1
- *  2. INTEGER_ARRAY h2
- *  3. INTEGER_ARRAY h3
+ * The function accepts 3 integer vectors
  */
 int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3)
 {
-  // stacks for input params
-  stack<int> st1, st2, st3;
+  int temp = 0; // temp buffer
 
-  /* push sum of h(x) to st(x)
-   * Example input  h1[3, 2, 1, 1, 1]
-   * Would become  st1[8, 5, 3, 2, 1]
-   * use h3, st3 as temp storage
-   */
-  int hItr = 0;
-  st3.emplace(0);
-  while (!h3.empty())
-  {
-    // read end of h(x), increment head by sum of tail, write to St3
-    st3.emplace(st3.top() + h3.back());
+  stack<int> st1;
+  st1.emplace(temp);   // give default
+  stack<int> st2(st1); // copy st1 constructor
+  stack<int> st3(st1); // copy st1 constructor
 
-    // manage memory as we parse
-    h3.pop_back();
+  // reverse the input arrays to write to stacks
+  reverse(h1.begin(), h1.end());
+  reverse(h2.begin(), h2.end());
+  reverse(h3.begin(), h3.end());
 
-    // loop control logic. copy to h3 to call loop
-    // Clear both temps, copy to stack.
-    if (h3.empty() && hItr == 0)
-    {
-      st3.swap(st1);
-      h3.swap(h1);
-      hItr++;
-      st3.emplace(0);
-    }
-    else if (h3.empty() && hItr == 1)
-    {
-      st3.swap(st2);
-      h3.swap(h2);
-      hItr++;
-      st3.emplace(0);
-    }
-  }
+  // populate stacks with input vectors
+  for (const auto &itr : h1)
+    st1.emplace(st1.top() + itr);
 
-  // sum each stack height for result logic
-  int hSum1, hSum2, hSum3, hMax;
+  for (const auto &itr : h2)
+    st2.emplace(st2.top() + itr);
+
+  for (const auto &itr : h3)
+    st3.emplace(st3.top() + itr);
 
   // loop and pop until all sums are even
   while (true)
   {
-    // read top elem, write to temp
-    hSum1 = st1.top();
-    hSum2 = st2.top();
-    hSum3 = st3.top();
+    // early break, handles empty and equal
+    if (st1.top() == st2.top() && st2.top() == st3.top())
+      return st1.top();
 
-    // check success condition
-    // works for empty, or equal
-    if (hSum1 == hSum2 && hSum2 == hSum3)
-      return hSum1;
+    // compare heights
+    temp = max({st1.top(), st2.top(), st3.top()});
 
-    // read max for trim logic
-    hMax = max({hSum1, hSum2, hSum3});
-
-    // trim tallest
-    if (hMax == hSum1)
+    if (st1.top() == temp)
       st1.pop();
-    else if (hMax == hSum2)
+    else if (st2.top() == temp)
       st2.pop();
-    else if (hMax == hSum3)
+    else if (st3.top() == temp)
       st3.pop();
-    else
-      return 0; // error
   }
 }
 
