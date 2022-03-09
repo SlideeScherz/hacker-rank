@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+
 using namespace std;
+
 string ltrim(const string &);
 string rtrim(const string &);
 vector<string> split(const string &);
@@ -15,56 +17,71 @@ vector<string> split(const string &);
  */
 int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3)
 {
+  // stacks for input params
+  stack<int> st1, st2, st3;
 
-  // rehash until we have equal heights
-  for (int i = 0; i < 3; i++)
+  /* push sum of h(x) to st(x)
+   * Example input  h1[3, 2, 1, 1, 1]
+   * Would become  st1[8, 5, 3, 2, 1]
+   * use h3, st3 as temp storage
+   */
+  int hItr = 0;
+  st3.emplace(0);
+  while (!h3.empty())
   {
+    // read end of h(x), increment head by sum of tail, write to St3
+    st3.emplace(st3.top() + h3.back());
 
-    // output arrays
-    for (const auto &value : h1)
-      cout << value << " ";
-    cout << endl;
-    for (const auto &value : h2)
-      cout << value << " ";
-    cout << endl;
-    for (const auto &value : h3)
-      cout << value << " ";
-    cout << endl;
+    // manage memory as we parse
+    h3.pop_back();
 
-    // get all three sums. smallest will be tgt
-    int target = 0;
-
-    // arr sums
-    int sum1 = 0;
-    int sum2 = 0;
-    int sum3 = 0;
-
-    // for each cpp, get all the sums
-    for (const auto &value : h1)
-      sum1 += value;
-    for (const auto &value : h2)
-      sum2 += value;
-    for (const auto &value : h3)
-      sum3 += value;
-    cout << "Sums: " << sum1 << " " << sum2 << " " << sum3 << endl;
-
-    // get minimum as baseline
-    // TODO Bug here
-    if (sum1 < sum2 && sum1 < sum3)
-      target = sum1;
-    target = (sum2 < sum3 && sum2 < sum1) ? sum2 : sum3;
-    cout << "Target: " << target << endl;
-
-    // remove 1 elem from head if != target
-    if (sum1 > target)
-      h1.erase(h1.begin());
-    if (sum2 > target)
-      h2.erase(h2.begin());
-    if (sum3 > target)
-      h3.erase(h3.begin());
+    // loop control logic. copy to h3 to call loop
+    // Clear both temps, copy to stack.
+    if (h3.empty() && hItr == 0)
+    {
+      st3.swap(st1);
+      h3.swap(h1);
+      hItr++;
+      st3.emplace(0);
+    }
+    else if (h3.empty() && hItr == 1)
+    {
+      st3.swap(st2);
+      h3.swap(h2);
+      hItr++;
+      st3.emplace(0);
+    }
   }
 
-  return 0;
+  // sum each stack height for result logic
+  int hSum1, hSum2, hSum3, hMax;
+
+  // loop and pop until all sums are even
+  while (true)
+  {
+    // read top elem, write to temp
+    hSum1 = st1.top();
+    hSum2 = st2.top();
+    hSum3 = st3.top();
+
+    // check success condition
+    // works for empty, or equal
+    if (hSum1 == hSum2 && hSum2 == hSum3)
+      return hSum1;
+
+    // read max for trim logic
+    hMax = max({hSum1, hSum2, hSum3});
+
+    // trim tallest
+    if (hMax == hSum1)
+      st1.pop();
+    else if (hMax == hSum2)
+      st2.pop();
+    else if (hMax == hSum3)
+      st3.pop();
+    else
+      return 0; // error
+  }
 }
 
 int main()
