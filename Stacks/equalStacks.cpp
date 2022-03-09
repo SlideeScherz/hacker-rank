@@ -15,7 +15,7 @@ int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3)
 {
   int temp = 0; // temp buffer
 
-  stack<int> st1;
+  stack<int> st1;      //stack for h1 to be copied
   st1.emplace(temp);   // give default
   stack<int> st2(st1); // copy st1 constructor
   stack<int> st3(st1); // copy st1 constructor
