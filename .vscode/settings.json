@@ -1,0 +1,32 @@
+{
+  "files.associations": {
+    "algorithm": "cpp",
+    "atomic": "cpp",
+    "bitset": "cpp",
+    "charconv": "cpp",
+    "deque": "cpp",
+    "format": "cpp",
+    "fstream": "cpp",
+    "initializer_list": "cpp",
+    "iomanip": "cpp",
+    "istream": "cpp",
+    "iterator": "cpp",
+    "list": "cpp",
+    "memory": "cpp",
+    "ostream": "cpp",
+    "queue": "cpp",
+    "sstream": "cpp",
+    "streambuf": "cpp",
+    "string": "cpp",
+    "vector": "cpp",
+    "xhash": "cpp",
+    "xiosbase": "cpp",
+    "xlocale": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xmemory": "cpp",
+    "xstring": "cpp",
+    "xtree": "cpp",
+    "xutility": "cpp"
+  }
+}

@@ -1,29 +1,13 @@
 #include <bits/stdc++.h>
 #include <vector>
+#include <iostream>
+#include <limits.h>
 
 using namespace std;
 
 string ltrim(const string &);
 string rtrim(const string &);
 vector<string> split(const string &);
-
-struct Node
-{
-  int vertex, end, weight;
-  int distanceToStart, previousVertex;
-
-  Node(int v, int e, int w)
-  {
-    vertex = v;
-    end = e;
-    weight = w;
-  }
-
-  void printNode()
-  {
-    cout << vertex << ": " << end << " " << weight << " D: " << distanceToStart << " prev: " << previousVertex << endl;
-  }
-};
 
 /*
 For people using c++ (std::cin, std::cout, specifically) and getting timeout on 7,
@@ -47,60 +31,32 @@ That did the trick for me (no need to change your code to scanf and printf)
  */
 vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
 {
-  vector<int> paths = {};
-  vector<Node> graphEdges = {};
-
   cout << "n: " << n << endl;
 
-  // create the nodes from input
+  // return value
+  vector<int> paths = {};
+
+  /**
+   * sptSet[i] will be true if vertex i is included in shortest
+   * path tree or shortest distance from src to i is finalized
+   */
+  bool spt[n];
+
+  /* distances */
+  int dist[n];
+
+  // max all distances, and spt to false
   for (int i = 0; i < n; i++)
   {
-    /* input
-    cout << edges[i][0] << " ";
-    cout << edges[i][1] << " ";
-    cout << edges[i][2] << endl;
-    */
-    // cout << "node:\t";
-    Node node(edges[i][0], edges[i][1], edges[i][2]);
+    dist[i] = INT_MAX;
+    spt[i] = false;
 
-    // if starting
-    if (node.vertex == s)
-    {
-      node.distanceToStart = 0;
-      node.previousVertex = 0;
-    }
-
-    // save last vertex
-    else if (i > 0)
-    {
-      node.previousVertex = graphEdges[i - 1].vertex;
-    }
-
-    // node.printNode();
-    graphEdges.emplace(graphEdges.cend(), node);
-
-    cout << "edge:\t";
-    graphEdges[i].printNode();
-
-    /*
-    can this node reach next node (next)?
-    yes:
-      record that cost
-      record dist from start
-    no:
-      next
-    */
-
-    for (int i1 = 0; i1 < n; i1++)
-    {
-      Node thisNode = graphEdges[i1];
-      // compare this node to all 1-4 and see if it ends
-      for (int i2 = 0; i2 < n; i2++)
-      {
-        Node nextNode = graphEdges[i2];
-      }
-    }
+    cout << dist[i] << endl;
+    cout << spt[i] << endl;
   }
+
+  // start will always be 0
+  spt[s] = 0;
 
   return paths;
 }
