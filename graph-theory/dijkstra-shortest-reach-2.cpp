@@ -32,31 +32,36 @@ That did the trick for me (no need to change your code to scanf and printf)
 vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
 {
   cout << "n: " << n << endl;
+  cout << "s: " << s << endl;
 
   // return value
   vector<int> paths = {};
 
-  /**
-   * sptSet[i] will be true if vertex i is included in shortest
-   * path tree or shortest distance from src to i is finalized
-   */
-  bool spt[n];
-
-  /* distances */
   int dist[n];
+  bool visited[n];
 
-  // max all distances, and spt to false
+  // max all distances
   for (int i = 0; i < n; i++)
   {
     dist[i] = INT_MAX;
-    spt[i] = false;
-
-    cout << dist[i] << endl;
-    cout << spt[i] << endl;
+    visited[i] = false;
   }
 
-  // start will always be 0
-  spt[s] = 0;
+  dist[s] = 0;
+
+  // unvisited iterator
+  int unvIter;
+
+  for (unvIter = 0; unvIter < n; unvIter++)
+  {
+    if (visited[unvIter] == false)
+    {
+      dist[unvIter] = edges[unvIter][2];
+    }
+
+    cout << "dist: " << dist[unvIter] << endl;
+    cout << "unv: " << visited[unvIter] << endl;
+  }
 
   return paths;
 }
