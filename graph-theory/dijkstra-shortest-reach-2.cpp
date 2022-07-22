@@ -72,7 +72,7 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
   unvisited[0].distToStart = 0;
 
   // temp, put in a loop
-  //   current = 1
+  //  current = 1
   int current = unvisited[0].vertex;
 
   // start at 1, visit and record all neighbors
