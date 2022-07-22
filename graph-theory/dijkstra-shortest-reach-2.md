@@ -24,10 +24,9 @@ set all previous nodes to 0 or null
 ```mermaid
 flowchart TB
 
-  A---|20|B
-  1:::start --> 2
-  1 --> 4
-  1 --> 3
-  3 --> 4
+  1:::start---|20|2
+  1---|20|4
+  1---|20|3
+  3---|20|4
   classDef start fill:#f96;
 ```
