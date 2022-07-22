@@ -54,6 +54,10 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
 
   // return value
   vector<int> paths = {};
+
+  // shortest path value
+  vector<int> spv = {};
+
   vector<Node> unvisited = {};
 
   // init nodes, start node is 1
@@ -71,26 +75,36 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
   //   current = 1
   int current = unvisited[0].vertex;
 
-  // start at 1, visit and record all neighbots
+  // start at 1, visit and record all neighbors
   for (int i = 0; i < n; i++)
   {
     // unvisited vertex
-    int u = edges[i][0];
+    int start = edges[i][0];
     int end = edges[i][1];
     int cost = edges[i][2];
 
-    cout << "U: " << u << endl;
+    cout << "start: " << start << " " << end << " " << cost << endl;
 
     // if a neighbor edge begins at current, record distance
-    if (u == current)
+    if (start == current)
     {
       // record the cost, and previous node
+      // end-1 because 0 indexing, but nodes begin at 1
       unvisited[end - 1].distToStart = cost;
       unvisited[end - 1].previousVertex = current;
     }
+    // opposite, but they connect
+    // use case start 3, goto 1
+    else if (end == current)
+    {
+      cout << "special case!: " << start << " " << end << " " << cost << endl;
+      unvisited[start - 1].distToStart = cost;
+      unvisited[start - 1].previousVertex = current;
+    }
+
+    // update shortest paths
   }
 
-  // init nodes, start node is 1
   for (int i = 0; i < n; i++)
   {
     unvisited[i].printNode();
