@@ -2,30 +2,13 @@
 #include <vector>
 #include <iostream>
 #include <limits.h>
+#include <algorithm>
 
 using namespace std;
 
 string ltrim(const string &);
 string rtrim(const string &);
 vector<string> split(const string &);
-
-struct Node
-{
-  int vertex;
-  int distToStart;
-  int previousVertex;
-
-  Node(int _vertex, int _distToStart, int _previousVertex)
-  {
-    vertex = _vertex;
-    distToStart = _distToStart;
-    previousVertex = _previousVertex;
-  }
-  void printNode()
-  {
-    cout << vertex << ": " << distToStart << " " << previousVertex << "\n";
-  }
-};
 
 /*
 For people using c++ (std::cin, std::cout, specifically) and getting timeout on 7,
@@ -55,59 +38,38 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
   // return value
   vector<int> paths = {};
 
-  // shortest path value
-  vector<int> spv = {};
+  // this index was visited
+  vector<bool> visited = {};
 
-  vector<Node> unvisited = {};
-
-  // init nodes, start node is 1
-  for (int i = 0; i < n; i++)
+  // init paths, 4 nodes = 3 paths!
+  // set all visited to false
+  for (int i = 0; i < n - 1; i++)
   {
-    Node node(i + 1, INT_MAX, 0);
-    unvisited.emplace_back(node);
-    node.printNode();
+    paths.emplace(paths.cend(), INT_MAX);
+    visited.emplace(visited.cend(), false);
   }
 
   // start always 0
-  unvisited[0].distToStart = 0;
+  paths[s - 1] = 0;
 
-  // temp, put in a loop
-  //  current = 1
-  int current = unvisited[0].vertex;
+  // iterator for exploring
+  int index, neighbor;
 
-  // start at 1, visit and record all neighbors
-  for (int i = 0; i < n; i++)
+  index = *min_element(paths.begin(), paths.end());
+
+  // explore all
+  while (index < n)
   {
-    // unvisited vertex
-    int start = edges[i][0];
-    int end = edges[i][1];
-    int cost = edges[i][2];
+    cout << index << endl;
 
-    cout << "start: " << start << " " << end << " " << cost << endl;
+    neighbor = index + 1;
 
-    // if a neighbor edge begins at current, record distance
-    if (start == current)
-    {
-      // record the cost, and previous node
-      // end-1 because 0 indexing, but nodes begin at 1
-      unvisited[end - 1].distToStart = cost;
-      unvisited[end - 1].previousVertex = current;
-    }
-    // opposite, but they connect
-    // use case start 3, goto 1
-    else if (end == current)
-    {
-      cout << "special case!: " << start << " " << end << " " << cost << endl;
-      unvisited[start - 1].distToStart = cost;
-      unvisited[start - 1].previousVertex = current;
-    }
+    // visit all neighbors that are not visited
 
-    // update shortest paths
-  }
+    // reset distance, and toggle visited
 
-  for (int i = 0; i < n; i++)
-  {
-    unvisited[i].printNode();
+    // select next node
+    index++;
   }
 
   return paths;
