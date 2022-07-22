@@ -23,7 +23,8 @@ set all previous nodes to 0 or null
 
 ```mermaid
 flowchart LR
-  1 --> 2 & 1 --> 4
+  1 --> 2
+  1 --> 4
   3 --> 1
   4 --> 3
 ```
