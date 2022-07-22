@@ -22,9 +22,12 @@ set all previous nodes to 0 or null
 3. pick the next node to visit with the lowest distance
 
 ```mermaid
-flowchart LR
-  1 --> 2
+flowchart TB
+
+  A---|20|B
+  1:::start --> 2
   1 --> 4
-  3 --> 1
+  1 --> 3
   3 --> 4
+  classDef start fill:#f96;
 ```
