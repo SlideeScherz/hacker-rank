@@ -9,6 +9,24 @@ string ltrim(const string &);
 string rtrim(const string &);
 vector<string> split(const string &);
 
+struct Node
+{
+  int vertex;
+  int distToStart;
+  int previousVertex;
+
+  Node(int _vertex, int _distToStart, int _previousVertex)
+  {
+    vertex = _vertex;
+    distToStart = _distToStart;
+    previousVertex = _previousVertex;
+  }
+  void printNode()
+  {
+    cout << vertex << ": " << distToStart << " " << previousVertex << "\n";
+  }
+};
+
 /*
 For people using c++ (std::cin, std::cout, specifically) and getting timeout on 7,
 remember to turn off synchronization with the standard C stream objects:
@@ -36,31 +54,46 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
 
   // return value
   vector<int> paths = {};
+  vector<Node> unvisited = {};
 
-  int dist[n];
-  bool visited[n];
-
-  // max all distances
+  // init nodes, start node is 1
   for (int i = 0; i < n; i++)
   {
-    dist[i] = INT_MAX;
-    visited[i] = false;
+    Node node(i + 1, INT_MAX, 0);
+    unvisited.emplace_back(node);
+    node.printNode();
   }
 
-  dist[s] = 0;
+  // start always 0
+  unvisited[0].distToStart = 0;
 
-  // unvisited iterator
-  int unvIter;
+  // temp, put in a loop
+  //   current = 1
+  int current = unvisited[0].vertex;
 
-  for (unvIter = 0; unvIter < n; unvIter++)
+  // start at 1, visit and record all neighbots
+  for (int i = 0; i < n; i++)
   {
-    if (visited[unvIter] == false)
-    {
-      dist[unvIter] = edges[unvIter][2];
-    }
+    // unvisited vertex
+    int u = edges[i][0];
+    int end = edges[i][1];
+    int cost = edges[i][2];
 
-    cout << "dist: " << dist[unvIter] << endl;
-    cout << "unv: " << visited[unvIter] << endl;
+    cout << "U: " << u << endl;
+
+    // if a neighbor edge begins at current, record distance
+    if (u == current)
+    {
+      // record the cost, and previous node
+      unvisited[end - 1].distToStart = cost;
+      unvisited[end - 1].previousVertex = current;
+    }
+  }
+
+  // init nodes, start node is 1
+  for (int i = 0; i < n; i++)
+  {
+    unvisited[i].printNode();
   }
 
   return paths;
